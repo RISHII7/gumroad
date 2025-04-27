@@ -47,7 +47,6 @@ export const SearchInput = ({ disabled }: SearchInputProps) => {
             </Link>
           </Button>
         )}
-        {/* TODO: Add Library button */}
     </div>
   )
 } 
