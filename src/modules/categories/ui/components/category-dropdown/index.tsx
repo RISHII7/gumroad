@@ -5,11 +5,13 @@ import { useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { useDropdownPosition } from "@/hooks/use-dropdown-position";
-import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 import { Button } from "@/components/ui/button";
 
-import { SubCategoryMenu } from "./subcategory-menu";
+import { CategoriesGetManyOutput } from "@/modules/categories/types";
+import { SubCategoryMenu } from "@/modules/categories/ui/components/subcategory-menu";
+
+
 
 interface CategoryDropdownProps {
   category: CategoriesGetManyOutput[1];

@@ -9,7 +9,7 @@ import { useTRPC } from "@/trpc/client";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { CategoriesSidebar } from "./categories-sidebar";
+import { CategoriesSidebar } from "../../../../categories/ui/components/categories-sidebar";
 
 interface SearchInputProps {
     disabled?: boolean;
