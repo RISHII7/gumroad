@@ -8,8 +8,8 @@ import { CategoriesGetManyOutput } from "@/modules/categories/types";
 
 import { Button } from "@/components/ui/button";
 
-import { CategoryDropdown } from "./category-dropdown";
-import { CategoriesSidebar } from "./categories-sidebar";
+import { CategoryDropdown } from "@/modules/categories/ui/components/category-dropdown";
+import { CategoriesSidebar } from "@/modules/categories/ui/components/categories-sidebar";
 
 interface CategoriesProps {
     data: CategoriesGetManyOutput

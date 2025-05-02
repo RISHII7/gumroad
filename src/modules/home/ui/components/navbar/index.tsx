@@ -7,11 +7,13 @@ import { MenuIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 
-import { cn } from "@/lib/utils";
 import { useTRPC } from "@/trpc/client";
 
 import { Button } from "@/components/ui/button";
-import { NavbarSidebar } from "./navbar-sidebar";
+
+import { navbarItems } from "@/modules/home/constants/navbar-items";
+import { NavbarItem } from "@/modules/home/ui/components/navbar-item";
+import { NavbarSidebar } from "@/modules/home/ui/components/navbar-sidebar";
 
 // import { Poppins } from "next/font/google";
 // const poppins = Poppins({
@@ -19,34 +21,6 @@ import { NavbarSidebar } from "./navbar-sidebar";
 //   weight: ["700"],
 // });
 
-interface NavbarItemProps {
-  href: string;
-  children: React.ReactNode;
-  isActive?: boolean;
-}
-
-const NavbarItem = ({ children, href, isActive }: NavbarItemProps) => {
-  return (
-    <Button
-      asChild
-      variant="outline"
-      className={cn(
-        "bg-transparent hover:bg-transparent rounded-full hover:border-primary border-transparent px-3.5 text-lg",
-        isActive && "bg-black text-white hover:bg-black hover:text-white"
-      )}
-    >
-      <Link href={href}>{children}</Link>
-    </Button>
-  );
-};
-
-const navbarItems = [
-  { href: "/", children: "Home" },
-  { href: "/about", children: "About" },
-  { href: "/features", children: "Features" },
-  { href: "/pricing", children: "Pricing" },
-  { href: "/contact", children: "Contact" },
-];
 
 export const Navbar = () => {
   const pathname = usePathname();

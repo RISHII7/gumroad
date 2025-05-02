@@ -4,8 +4,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 
-import { Categories } from "./categories";
-import { SearchInput } from "./search-input";
+import { Categories } from "../../../../categories/ui/components/categories";
+import { SearchInput } from "../search-input";
 
 export const SearchFilters = () => {
   const trpc = useTRPC();
