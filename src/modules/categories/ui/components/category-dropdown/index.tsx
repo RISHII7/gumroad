@@ -11,8 +11,6 @@ import { Button } from "@/components/ui/button";
 import { CategoriesGetManyOutput } from "@/modules/categories/types";
 import { SubCategoryMenu } from "@/modules/categories/ui/components/subcategory-menu";
 
-
-
 interface CategoryDropdownProps {
   category: CategoriesGetManyOutput[1];
   isActive?: boolean;
