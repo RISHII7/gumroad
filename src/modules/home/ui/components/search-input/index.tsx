@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from "lucide-react";
 
@@ -17,6 +17,11 @@ interface SearchInputProps {
 
 export const SearchInput = ({ disabled }: SearchInputProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+  useEffect(() => {
+      setHasHydrated(true);
+  }, []);
 
   const trpc = useTRPC();
   const session = useQuery(trpc.auth.session.queryOptions());
@@ -35,7 +40,7 @@ export const SearchInput = ({ disabled }: SearchInputProps) => {
         >
           <ListFilterIcon />
         </Button>
-        {session.data?.user && (
+        {hasHydrated && session.data?.user && (
           <Button
             asChild
             variant="elevated"
