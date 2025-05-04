@@ -1,0 +1,1 @@
+export const sortValues = ["curated", "trending", "hot_and_new"] as const;
