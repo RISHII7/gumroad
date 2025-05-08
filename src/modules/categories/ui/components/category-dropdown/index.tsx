@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { useDropdownPosition } from "@/hooks/use-dropdown-position";
 
 import { Button } from "@/components/ui/button";
 
@@ -24,7 +23,6 @@ export const CategoryDropdown = ({
 }: CategoryDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const { getDropdownPosition } = useDropdownPosition(dropdownRef);
 
   const onMouseEnter = () => {
     if (category.subcategories) {
@@ -38,7 +36,6 @@ export const CategoryDropdown = ({
     }
   };
 
-  const dropdownPosition = getDropdownPosition();
 
   // TODO: Potentially improve mobile
   // const toggleDropDown = () => {
@@ -81,7 +78,6 @@ export const CategoryDropdown = ({
       <SubCategoryMenu
         category={category}
         isOpen={isOpen}
-        position={dropdownPosition}
       />
     </div>
   );
