@@ -9,8 +9,14 @@ const withRetry = async <T>(fn: () => Promise<T>, retries = 3, delay = 500): Pro
   for (let i = 0; i < retries; i++) {
     try {
       return await fn();
-    } catch (err: any) {
-      if (err?.errorLabels?.includes("TransientTransactionError")) {
+    } catch (err: unknown) {
+      if (
+        typeof err === "object" &&
+        err !== null &&
+        "errorLabels" in err &&
+        Array.isArray((err as { errorLabels?: string[] }).errorLabels) &&
+        (err as { errorLabels?: string[] }).errorLabels?.includes("TransientTransactionError")
+      ) {
         console.warn(`Transient error encountered. Retrying ${i + 1}/${retries}...`);
         await sleep(delay);
       } else {
@@ -160,6 +166,31 @@ const categories = [
 const seed = async () => {
   const payload = await getPayload({ config });
 
+  const adminTenant = await payload.create({
+    collection: "tenants",
+    data: {
+      name: "rishii",
+      slug: "rishii",
+      stripeAccountId: "rishii"
+    },
+  });
+
+  // create admin user
+  await payload.create({
+    collection: "users",
+    data: {
+      email: "rishikesh.palande07@gmail.com",
+      password: "rishii",
+      roles: ["super-admin"],
+      username: "RISHII",
+      tenants: [
+        {
+          tenant: adminTenant.id
+        }
+      ]
+    },
+  });
+ 
   for (const category of categories) {
     const parentCategory = await withRetry(() =>
       payload.create({
