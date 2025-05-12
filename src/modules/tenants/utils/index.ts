@@ -1,3 +1,3 @@
-export function generateTenantUrl(tenantSlug: string) {
+export function generateTenantURL(tenantSlug: string) {
     return `/tenants/${tenantSlug}`
 };
