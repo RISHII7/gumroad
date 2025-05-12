@@ -17,7 +17,6 @@ import { StarRating } from "@/components/start-rating";
 
 import { formatCurrency } from "@/modules/products/utils";
 import { generateTenantURL } from "@/modules/tenants/utils";
-// import { CartButton } from "@/modules/products/ui/components/cart-button";
 
 const CartButton = dynamic(
   () => import("@/modules/products/ui/components/cart-button").then(
