@@ -7,6 +7,18 @@ import config from "@payload-config";
 import { stripe } from "@/lib/stripe";
 import { ExpandedLineItem } from "@/modules/checkout/types";
 
+/**
+ * Handles incoming Stripe webhook POST requests for permitted event types.
+ *
+ * Verifies the Stripe webhook signature, processes supported events (currently only "checkout.session.completed"), and creates order records in Payload CMS based on the checkout session data. Returns appropriate HTTP responses for verification failures, processing errors, or successful receipt.
+ *
+ * @param req - The incoming HTTP request containing the Stripe webhook payload.
+ *
+ * @returns A JSON response indicating the result of webhook processing.
+ *
+ * @throws {Error} If the event type is permitted but required data is missing, the user is not found, or line items are absent in the checkout session.
+ * @remark Only the "checkout.session.completed" event type is currently handled; all others will result in an error.
+ */
 export async function POST(req: Request) {
   let event: Stripe.Event;
 
