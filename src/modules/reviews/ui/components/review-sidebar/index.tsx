@@ -1,11 +1,21 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { useTRPC } from "@/trpc/client";
+import { ReviewForm } from "@/modules/reviews/ui/components/review-form";
+
 interface ReviewSidebarProps {
     productId: string;
 };
 
 export const ReviewSidebar = ({ productId }: ReviewSidebarProps) => {
+    const trpc = useTRPC();
+    const { data } = useSuspenseQuery(trpc.reviews.getOne.queryOptions({
+        productId,
+    }))
   return (
-    <div>
-        ReviewSidebar
-    </div>
+    <ReviewForm 
+        productId={productId}
+        initialData={data}
+    />
   );
 };
