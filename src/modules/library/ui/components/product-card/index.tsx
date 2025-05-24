@@ -3,10 +3,6 @@ import Image from "next/image";
 
 import { StarIcon } from "lucide-react";
 
-
-// TODO: Add real ratings
-
-
 interface ProductCardProps {
   id: string;
   name: string;
