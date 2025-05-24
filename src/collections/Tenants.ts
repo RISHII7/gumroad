@@ -27,6 +27,9 @@ export const Tenants: CollectionConfig = {
       index: true,
       required: true,
       unique: true,
+      access: {
+        update: ({ req }) => isSuperAdmin(req.user),
+      },
       admin: {
         description:
           "This is the subdomain of the store (e.g. [slug].gumroad.com)",
