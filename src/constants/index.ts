@@ -1,0 +1,1 @@
+export const PLATEFORM_FEE = 10;

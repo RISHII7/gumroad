@@ -3,8 +3,10 @@ import type Stripe from "stripe";
 
 import { TRPCError } from "@trpc/server";
 
-import { stripe } from "@/lib/stripe";
+import { PLATEFORM_FEE } from "@/constants";
 import { Media, Tenant } from "@/payload-types";
+
+import { stripe } from "@/lib/stripe";
 import { baseProcedure, createTRPCRouter, protectedProcedure } from "@/trpc/init";
 
 import { CheckoutMetadata, ProductMetadata } from "@/modules/checkout/types/index";
@@ -109,7 +111,12 @@ export const checkoutRouter = createTRPCRouter({
         });
       };
 
-      // TODO: Throw error if stripe details not submitted
+      if (!tenant.stripeDetailsSubmitted) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Tenant not allowed to sell products",
+        });
+      };
 
       const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = 
         products.docs.map((product) => ({
@@ -129,6 +136,15 @@ export const checkoutRouter = createTRPCRouter({
           },
         }));
 
+        const totalAmount = products.docs.reduce(
+          (acc, item) => acc + item.price * 100,
+          0
+        );
+
+        const platformFeeAmount = Math.round(
+          totalAmount * (PLATEFORM_FEE / 100)
+        );
+
         const checkout = await stripe.checkout.sessions.create({
           customer_email: ctx.session.user.email,
           success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tenants/${input.tenantSlug}/checkout?success=true`,
@@ -140,7 +156,12 @@ export const checkoutRouter = createTRPCRouter({
           },
           metadata: {
             userId: ctx.session.user.id
-          } as CheckoutMetadata
+          } as CheckoutMetadata,
+          payment_intent_data: {
+            application_fee_amount: platformFeeAmount
+          },
+        }, {
+          stripeAccount: tenant.stripeAccountId,
         });
 
         if (!checkout.url) {
