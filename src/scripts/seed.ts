@@ -1,5 +1,6 @@
 import { getPayload } from "payload";
 import config from "@/payload.config";
+import { stripe } from "@/lib/stripe";
 
 // ⏳ Utility to pause between writes
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -166,12 +167,14 @@ const categories = [
 const seed = async () => {
   const payload = await getPayload({ config });
 
+  const adminAccount = await stripe.accounts.create({});
+
   const adminTenant = await payload.create({
     collection: "tenants",
     data: {
       name: "rishii",
       slug: "rishii",
-      stripeAccountId: "rishii"
+      stripeAccountId: adminAccount.id,
     },
   });
 

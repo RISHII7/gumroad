@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { headers as getHeaders } from "next/headers";
 
+import { stripe } from "@/lib/stripe";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 
 import { generateAuthCookie } from "@/modules/auth/utils";
@@ -34,14 +35,23 @@ export const authRouter = createTRPCRouter({
           code: "BAD_REQUEST",
           message: "Username already taken"
         });
-      }
+      };
+
+      const account = await stripe.accounts.create({});
+
+      if (!account) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Failed to create stripe account"
+        });
+      };
 
       const tenant = await ctx.db.create({
         collection: "tenants",
         data: {
           name: input.username,
           slug: input.username,
-          stripeAccountId: "test"
+          stripeAccountId: account.id
         }       
       });
 
